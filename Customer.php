@@ -63,7 +63,7 @@ class Customer
         list ($name, $totalAmount, $frequentRenterPoints, $rentalsArr) = $this->generateStatement();
         return "<h1>Rental Record for <em>{$name}<em><h1>";
     }
-    
+
     /**
      * @return array
      */
@@ -75,39 +75,11 @@ class Customer
         $frequentRenterPoints = $this->calculateFrequentRenterPoints($this->rentals);
 
         foreach ($this->rentals as $rental) {
-            $thisAmount = $this->calculateRentalAmount($rental);
+            $thisAmount = $rental->getRentalAmount();
             $totalAmount += $thisAmount;
             $rentalsArr[$rental->movie()->name()] = $thisAmount;
         }
         return array($name, $totalAmount, $frequentRenterPoints, $rentalsArr);
-    }
-
-    /**
-     * @return double
-     */
-    private function calculateRentalAmount($rental)
-    {
-        $thisAmount = 0;
-
-        switch($rental->movie()->priceCode()) {
-            case Movie::REGULAR:
-                $thisAmount += 2;
-                if ($rental->daysRented() > 2) {
-                    $thisAmount += ($rental->daysRented() - 2) * 1.5;
-                }
-                break;
-            case Movie::NEW_RELEASE:
-                $thisAmount += $rental->daysRented() * 3;
-                break;
-            case Movie::CHILDRENS:
-                $thisAmount += 1.5;
-                if ($rental->daysRented() > 3) {
-                    $thisAmount += ($rental->daysRented() - 3) * 1.5;
-                }
-                break;
-        }
-
-        return $thisAmount;
     }
 
     /**
