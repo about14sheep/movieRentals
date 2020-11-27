@@ -70,4 +70,12 @@ class Rental
         return "\t" . str_pad($this->movie->name(), 30, ' ', STR_PAD_RIGHT) . "\t" . $this->movie->getAmount($this->daysRented) . PHP_EOL;
     }
 
+    /**
+     * @return string
+     */
+    public function formatHTML()
+    {
+        return "<li>" . $this->movie->name() . " - " . $this->daysRented . "</li>";
+    }
+
 }

@@ -62,7 +62,19 @@ class Customer
      */
     public function htmlStatement()
     {
-
+        $price = 0;
+        $points = 0;
+        $result = "<h1>Rental Record for <em>{$this->name}<em></h1>";
+        $result .= "<ul>";
+        foreach($this->rentals as $rental) {
+            $result .= $rental->formatHTML();
+            $price += $rental->getRentalAmount();
+            $points += $rental->renterPoints();
+        }
+        $result .= "</ul>";
+        $result .= "<p>Amount owed is <em>{$price}</em></p>";
+        $result .= "<p>You earned <em>{$points}</em> frequent renter points</p>";
+        return $result;
     }
 
     /**
