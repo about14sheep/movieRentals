@@ -2,19 +2,10 @@
 
 class Movie
 {
-    const CHILDRENS = 2;
-    const REGULAR = 0;
-    const NEW_RELEASE = 1;
-
     /**
      * @var string
      */
     private $name;
-
-    /**
-     * @var int
-     */
-    private $priceCode;
 
     /**
      * @var Classification
@@ -22,15 +13,20 @@ class Movie
     private $classification;
 
     /**
-     * @param string $name
-     * @param int $priceCode
-     * @param Classification $classification
+     * @var bool
      */
-    public function __construct($name, $priceCode, $classification)
+    private $newRelease;
+
+    /**
+     * @param string $name
+     * @param Classification $classification
+     * @param newRelease $newRelease
+     */
+    public function __construct($name, $classification, $newRelease)
     {
         $this->name = $name;
-        $this->priceCode = $priceCode;
         $this->classification = $classification;
+        $this->newRelease = $newRelease;
     }
 
     /**
@@ -42,14 +38,6 @@ class Movie
     }
 
     /**
-     * @return int
-     */
-    public function priceCode()
-    {
-        return $this->priceCode;
-    }
-
-    /**
      * @return Classification
      */
     public function classification()
@@ -57,18 +45,26 @@ class Movie
         return $this->classification;
     }
 
+    /**
+     * @return bool
+     */
+    public function newRelease()
+    {
+        return $this->newRelease;
+    }
+
     public function getAmount($daysRented)
     {
-        return $this->amountSwitch($daysRented);
+        return $this->calculateAmount($daysRented);
     }
 
     /**
      * @return double
      */
-    private function amountSwitch($daysRented)
+    private function calculateAmount($daysRented)
     {
         $thisAmount = 0;
-        if ($this->priceCode() === 1) {
+        if ($this->newRelease()) {
             $thisAmount += $daysRented * 3;
         } else {
             $thisAmount += $this->classification()->getCost($daysRented);

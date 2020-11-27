@@ -17,7 +17,6 @@ class Classification
    */
   private $lateMultiplier;
 
-
   /**
    * @var int
    */

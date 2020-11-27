@@ -91,7 +91,7 @@ class Customer
 
         foreach($rentals as $rental) {
             $frequentRenterPoints++;
-            if ($rental->movie()->priceCode() === Movie::NEW_RELEASE && $rental->daysRented() > 1) {
+            if ($rental->movie()->newRelease() && $rental->daysRented() > 1) {
                 $frequentRenterPoints++;
             }
         }
