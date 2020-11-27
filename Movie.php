@@ -17,13 +17,20 @@ class Movie
     private $priceCode;
 
     /**
+     * @var Classification
+     */
+    private $classification;
+
+    /**
      * @param string $name
      * @param int $priceCode
+     * @param Classification $classification
      */
-    public function __construct($name, $priceCode)
+    public function __construct($name, $priceCode, $classification)
     {
         $this->name = $name;
         $this->priceCode = $priceCode;
+        $this->classification = $classification;
     }
 
     /**
@@ -42,6 +49,14 @@ class Movie
         return $this->priceCode;
     }
 
+    /**
+     * @return Classification
+     */
+    public function classification()
+    {
+        return $this->classification;
+    }
+
     public function getAmount($daysRented)
     {
         return $this->amountSwitch($daysRented);
@@ -53,22 +68,10 @@ class Movie
     private function amountSwitch($daysRented)
     {
         $thisAmount = 0;
-        switch($this->priceCode()) {
-            case Movie::REGULAR:
-                $thisAmount += 2;
-                if ($daysRented > 2) {
-                    $thisAmount += ($daysRented - 2) * 1.5;
-                }
-                break;
-            case Movie::NEW_RELEASE:
-                $thisAmount += $daysRented * 3;
-                break;
-            case Movie::CHILDRENS:
-                $thisAmount += 1.5;
-                if ($daysRented > 3) {
-                    $thisAmount += ($daysRented - 3) * 1.5;
-                }
-                break;
+        if ($this->priceCode() === 1) {
+            $thisAmount += $daysRented * 3;
+        } else {
+            $thisAmount += $this->classification()->getCost($daysRented);
         }
         return $thisAmount;
     }
