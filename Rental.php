@@ -45,20 +45,29 @@ class Rental
     {
         return $this->calculateRentalAmount();
     }
-    
-    /**
-     * @return double
-     */
-    private function calculateRentalAmount()
-    {
-        return $this->movie()->getAmount($this->daysRented());
-    }
 
     /**
      * @return int
      */
     public function renterPoints()
     {
-        return $this->movie()->frequentRenterPoints($this->daysRented());
+        return $this->movie->frequentRenterPoints($this->daysRented);
     }
+    
+    /**
+     * @return double
+     */
+    private function calculateRentalAmount()
+    {
+        return $this->movie->getAmount($this->daysRented);
+    }
+
+    /**
+     * @return string
+     */
+    public function formatRental()
+    {
+        return "\t" . str_pad($this->movie->name(), 30, ' ', STR_PAD_RIGHT) . "\t" . $this->movie->getAmount($this->daysRented) . PHP_EOL;
+    }
+
 }

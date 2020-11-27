@@ -41,16 +41,18 @@ class Customer
      * @return string
      */
     public function statement()
-    {
-        list ($name, $totalAmount, $frequentRenterPoints, $rentalsArr) = $this->generateStatement();
+    {   
+        $price = 0;
+        $points = 0;
+        $result = $this->formatHeader($this->name);
 
-        $result = $this->formatHeader($name);
-
-        foreach ($rentalsArr as $title=>$amount) {
-            $result .= $this->formatRentals($title, $amount);
+        foreach ($this->rentals as $rental) {
+            $result .= $rental->formatRental();
+            $price += $rental->getRentalAmount();
+            $points += $rental->renterPoints();
         }
 
-        $result .= $this->formatFooter($totalAmount, $frequentRenterPoints);
+        $result .= $this->formatFooter($price, $points);
 
         return $result;
     }
@@ -60,38 +62,7 @@ class Customer
      */
     public function htmlStatement()
     {
-        list ($name, $totalAmount, $frequentRenterPoints, $rentalsArr) = $this->generateStatement();
-        return "<h1>Rental Record for <em>{$name}<em><h1>";
-    }
 
-    /**
-     * @return array
-     */
-    private function generateStatement()
-    {
-        $totalAmount = 0;
-        $rentalsArr = array();
-        $name = $this->name();
-        $frequentRenterPoints = $this->calculateFrequentRenterPoints($this->rentals);
-
-        foreach ($this->rentals as $rental) {
-            $thisAmount = $rental->getRentalAmount();
-            $totalAmount += $thisAmount;
-            $rentalsArr[$rental->movie()->name()] = $thisAmount;
-        }
-        return array($name, $totalAmount, $frequentRenterPoints, $rentalsArr);
-    }
-
-    /**
-     * @return int
-     */
-    private function calculateFrequentRenterPoints($rentals)
-    {
-        $frequentRenterPoints = 0;
-        foreach($rentals as $rental) {
-            $frequentRenterPoints += $rental->renterPoints();
-        }
-        return $frequentRenterPoints;
     }
 
     /**
@@ -110,14 +81,6 @@ class Customer
         $earnedStr = 'Amount owed is ' . $totalAmount . PHP_EOL;
         $renterPointsStr = 'You earned ' . $frequentRenterPoints . ' frequent renter points' . PHP_EOL;
         return $earnedStr . $renterPointsStr;
-    }
-
-    /**
-     * @return string
-     */
-    private function formatRentals($name, $amount)
-    {
-        return "\t" . str_pad($name, 30, ' ', STR_PAD_RIGHT) . "\t" . $amount . PHP_EOL;
     }
 
 }
