@@ -53,4 +53,12 @@ class Rental
     {
         return $this->movie()->getAmount($this->daysRented());
     }
+
+    /**
+     * @return int
+     */
+    public function renterPoints()
+    {
+        return $this->movie()->frequentRenterPoints($this->daysRented());
+    }
 }

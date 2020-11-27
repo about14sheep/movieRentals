@@ -4,42 +4,34 @@ require_once('Movie.php');
 require_once('Rental.php');
 require_once('Customer.php');
 require_once('Classification.php');
+require_once('ChildrensClassification.php');
+require_once('NewReleaseClassification.php');
+require_once('RegularClassification.php');
 
-$classif1 = new Classification(
-    'Childrens',
-    1.5,
-    3,
-    1.5
-);
+$classif1 = new ChildrensClassification('Childrens');
 
-$classif2 = new Classification(
-    'Regular',
-    2.0,
-    2,
-    1.5
-);
+$classif2 = new NewReleaseClassification('New Release');
+
+$classif3 = new RegularClassification('Regular');
 
 $rental1 = new Rental(
     new Movie(
         'Back to the Future',
-        $classif1,
-        FALSE
+        $classif1
     ), 4
 );
 
 $rental2 = new Rental(
     new Movie(
         'Office Space',
-        $classif2,
-        FALSE
+        $classif3
     ), 3
 );
 
 $rental3 = new Rental(
     new Movie(
         'The Big Lebowski',
-        $classif1,
-        TRUE
+        $classif2
     ), 5
 );
 

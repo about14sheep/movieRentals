@@ -13,20 +13,13 @@ class Movie
     private $classification;
 
     /**
-     * @var bool
-     */
-    private $newRelease;
-
-    /**
      * @param string $name
      * @param Classification $classification
-     * @param newRelease $newRelease
      */
-    public function __construct($name, $classification, $newRelease)
+    public function __construct($name, $classification)
     {
         $this->name = $name;
         $this->classification = $classification;
-        $this->newRelease = $newRelease;
     }
 
     /**
@@ -45,14 +38,6 @@ class Movie
         return $this->classification;
     }
 
-    /**
-     * @return bool
-     */
-    public function newRelease()
-    {
-        return $this->newRelease;
-    }
-
     public function getAmount($daysRented)
     {
         return $this->calculateAmount($daysRented);
@@ -63,12 +48,14 @@ class Movie
      */
     private function calculateAmount($daysRented)
     {
-        $thisAmount = 0;
-        if ($this->newRelease()) {
-            $thisAmount += $daysRented * 3;
-        } else {
-            $thisAmount += $this->classification()->getCost($daysRented);
-        }
-        return $thisAmount;
+        return $this->classification()->getCost($daysRented);
+    }
+
+    /**
+     * @return int
+     */
+    public function frequentRenterPoints($daysRented)
+    {
+        return $this->classification()->getPoints($daysRented);
     }
 }

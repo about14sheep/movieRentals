@@ -88,12 +88,8 @@ class Customer
     private function calculateFrequentRenterPoints($rentals)
     {
         $frequentRenterPoints = 0;
-
         foreach($rentals as $rental) {
-            $frequentRenterPoints++;
-            if ($rental->movie()->newRelease() && $rental->daysRented() > 1) {
-                $frequentRenterPoints++;
-            }
+            $frequentRenterPoints += $rental->renterPoints();
         }
         return $frequentRenterPoints;
     }

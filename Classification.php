@@ -1,39 +1,18 @@
 <?php
 
-class Classification
+abstract class Classification
 {
   /**
     * @var string
     */
-  private $name;
-
-  /**
-   * @var double
-   */
-  private $price;
-
-  /**
-   * @var double
-   */
-  private $lateMultiplier;
-
-  /**
-   * @var int
-   */
-  private $daysBeforeLate;
+  protected $name;
 
   /**
    * @param string $name
-   * @param double $price
-   * @param int $daysBeforeLate
-   * @param double $lateMultiplier
    */
-  public function __construct($name, $price, $daysBeforeLate, $lateMultiplier)
+  public function __construct($name)
   {
     $this->name = $name;
-    $this->price = $price;
-    $this->daysBeforeLate = $daysBeforeLate;
-    $this->lateMultiplier = $lateMultiplier;
   }
 
   /**
@@ -47,45 +26,27 @@ class Classification
   /**
    * @return double
    */
-  public function price()
-  {
-    return $this->price;
-  }
-
-  /**
-   * @return int
-   */
-  public function daysBeforeLate()
-  {
-    return $this->daysBeforeLate;
-  }
-
-  /**
-   * @return double
-   */
-  public function lateMultiplier()
-  {
-    return $this->lateMultiplier;
-  }
-
-  /**
-   * @return double
-   */
   public function getCost($daysRented)
   {
     return $this->calculateCost($daysRented);
   }
 
   /**
+   * @return int
+   */
+  public function getPoints($daysRented)
+  {
+    return $this->calculatePoints($daysRented);
+  }
+
+  /**
    * @return double
    */
-  private function calculateCost($daysRented)
-  {
-    $cost = $this->price();
-    if ($daysRented > $this->daysBeforeLate()) {
-      $cost += ($daysRented - $this->daysBeforeLate()) * $this->lateMultiplier();
-    }
-    return $cost;
-  }
+  abstract protected function calculateCost($daysRented);
+
+  /**
+   * @return int
+   */
+  abstract protected function calculatePoints($daysRented);
   
 }
