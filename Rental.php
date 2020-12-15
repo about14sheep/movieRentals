@@ -75,7 +75,7 @@ class Rental
      */
     public function formatHTML()
     {
-        return "<li>" . $this->movie->name() . " - " . $this->daysRented . "</li>";
+        return "<li>" . $this->movie->name() . " - " . $this->movie->getAmount($this->daysRented) . "</li>";
     }
 
 }

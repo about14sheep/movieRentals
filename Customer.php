@@ -44,7 +44,7 @@ class Customer
     {   
         $price = 0;
         $points = 0;
-        $result = $this->formatHeader($this->name);
+        $result = $this->formatHeader($this->name); 
 
         foreach ($this->rentals as $rental) {
             $result .= $rental->formatRental();
